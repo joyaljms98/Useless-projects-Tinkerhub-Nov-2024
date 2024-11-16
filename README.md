@@ -1,106 +1,158 @@
-# This is a file with password protection to the docx file
-# pip install python-docx
-# pip install pywin32
+# Useless-projects-Tinkerhub-Nov-2024
+Our code repo for the "Useless Project" by tinkerhub on Nov 2024. (CUCEK)
 
-import tkinter as tk
-from tkinter import filedialog, messagebox
-import random
-import os
-import datetime
-from docx import Document
-import win32com.client as win32
+<img width="1280" alt="readme-banner" src="https://github.com/user-attachments/assets/35332e92-44cb-425b-9dff-27bcf1023c6c">
 
-def hide_text(event=None):
-    mainwindow.config(fg="#f7f5f5")
+# Secret Notepad with Active Encryption 🎯
 
-def character_count_update(event):
-    content = mainwindow.get("1.0", tk.END)
-    c = len(content) - 1
-    char_count_label.config(text=f"Character Count : {c}")
 
-def save_file(event=None):
-    download_path = os.path.expanduser("~\\Downloads")
-    base_file_name = "secret_note"
-    file_extension = ".docx"
-    file_index = 1
-    file_name = f"{base_file_name}{file_index}{file_extension}"
-    file_path = os.path.join(download_path, file_name)
-    
-    while os.path.exists(file_path):
-        file_index += 1
-        file_name = f"{base_file_name}{file_index}{file_extension}"
-        file_path = os.path.join(download_path, file_name)
-    
-    doc = Document()
-    content = random.choice(fake_data)
-    doc.add_paragraph(content)
-    doc.save(file_path)
-    
-    current_date = datetime.datetime.now().strftime("%d%m%y")
-    
-    try:
-        word = win32.gencache.EnsureDispatch('Word.Application')
-        word.Visible = False
-        doc = word.Documents.Open(file_path)
-        doc.Password = current_date
-        doc.SaveAs(file_path, Password=current_date)
-        doc.Close()
-        word.Quit()
-        download_path = os.path.expanduser("~\\Documents")
-        file_name = f"{base_file_name}{file_index}{file_extension}"
-        file_path = os.path.join(download_path, file_name)
-        messagebox.showinfo("Secret saved", f"Your secret has been saved to:\n{file_path}\nPassword: {current_date}")
-    except Exception as e:
-        messagebox.showerror("Error", f"Failed to save with password: {str(e)}")
+## Basic Details
+### Team Name: Logic Overload
 
-fake_data = [
-    "Your secrets are safe... because they're not saved.",
-    "Secrets are meant to be forgotten!, so I just did it for you !",
-    "Don't waste your time with secrets. I didnt !",
-    "Lost in the void... just like your secrets.",
-    "No one will find this because it's never saved!",
-    "A memory is fleeting, just like this note.",
-    "Hidden so well, even you won't retrieve it.. Ever !",
-    "Don't worry; your secrets are safe in the ether.",
-    "Shhh... it's a secret, or was it ?",
-    "Like a whisper in the wind, all was forgotten."
-]
 
-initial_message = "Type your secrets here..."
-root = tk.Tk()
-root.title("Secret Notepad with Active Encryption")
-root.geometry("600x600")
-root.configure(bg="#c4c4c4")
+### Team Members
+- Member 1: Nandhu Krishna - CUCEK
+- Member 2: Joyal James - CUCEK
+- Member 3: Sneha V - CUCEK
 
-mainwindow = tk.Text(root, width=80, height=15, font=("Verdana", 20), wrap="word", fg="#000000", bg="#f7f5f5", insertbackground="black",selectbackground="#f7f5f5")
-mainwindow = tk.Text(root, width=80, height=15,font=("Verdana" ,20), wrap="word",fg="#000000", bg="#f7f5f5", insertbackground="black" ,selectbackground="#f7f5f5")
+### Project Description
+This project is a "Secret Notepad" application built with Python's Tkinter library. It provides a secure notepad interface where users can type and save secret messages. The application features disappearing text, automatic character counting and a random text-based "encryption" that saves each secret message with unique paths.
 
-mainwindow.pack(pady=10, padx=10)
-mainwindow.insert("1.0", initial_message)
+### The Problem (that doesn't exist)
+Ever felt the overwhelming need to save secrets in a way that even you might not remember? Tired of traditional notepads that store secrets far too accessibly? Welcome to the realm of our "Secret Notepad," designed to store secrets in files you’ll likely never locate again!
 
-def on_focus_in(event):
-    if mainwindow.get("1.0", tk.END).strip() == initial_message:
-        mainwindow.delete("1.0", tk.END)
-        mainwindow.config(fg="black")
+### The Solution (that nobody asked for)
+Introducing a notepad that saves your secrets, and a self-erasing feature! This app not only hides your message but makes finding it feel like a treasure hunt. Forget traditional security – this is the finest way to manage your secret messages.
 
-def on_focus_out(event):
-    if mainwindow.get("1.0", tk.END).strip() == "":
-        mainwindow.insert("1.0", initial_message)
-        mainwindow.config(fg="gray")
+## Technical Details
+### Technologies/Components Used
+For Software:
+- Language used : Python
+- Frameworks used : Tkinter (Python’s standard GUI framework)
+- Libraries Used : tkinter (for GUI), random (to select fun “encrypted” text), os (for file handling and directory management)
+- Tools used : Visual Studio Code (IDE), Git, Github
 
-mainwindow.bind("<FocusIn>", on_focus_in)
-mainwindow.bind("<FocusOut>", on_focus_out)
 
-save_button = tk.Button(root, text="Save the secret message with Encryption", font=("Verdana", 12), command=save_file)
-save_button.pack(pady=10)
+Here's an updated version with steps for installing the necessary libraries:
 
-def on_text_change(event):
-    mainwindow.config(fg="black")
-    root.after(50, hide_text)
+---
 
-char_count_label = tk.Label(root, text="Character Count : 0", font=("Verdana", 12), bg="#c4c4c4")
-char_count_label.pack(pady=(5, 10))
+### Implementation
+For Software:
 
-mainwindow.bind("<KeyRelease>", lambda event: [on_text_change(event), character_count_update(event)])
+#### Installation
 
-root.mainloop()
+1. Ensure Python is installed on your system. You can check with:
+   ```bash
+   python --version
+   ```
+
+2. Install Tkinter (usually included with Python, but in case it's missing):
+   ```bash
+   sudo apt-get install python3-tk  # for Linux
+   ```
+   On Windows, Tkinter should be available by default with Python.
+
+3. Install the `python-docx` library to enable creating and editing `.docx` files:
+   ```bash
+   pip install python-docx
+   ```
+
+4. Install the `pywin32` library for interacting with Microsoft Word:
+   ```bash
+   pip install pywin32
+   ```
+
+
+
+#### Run
+To start the Secret Notepad application:
+```bash
+python secret_notepad.py
+```
+Replace `secret_notepad.py` with the filename of your script. Enjoy your whimsical secret-keeping!
+
+
+
+### Project Documentation
+For Software:
+
+# Screenshots (Add at least 3)
+
+*Interface*
+
+<img src="https://github.com/nandhukpvr/Useless-projects-Tinkerhub-Nov-2024/blob/Joyal's-Repository-default-branch/images/Screenshot%202024-11-02%20201257.png?raw=true">
+
+
+*While typing secrets*
+
+<img src="https://github.com/nandhukpvr/Useless-projects-Tinkerhub-Nov-2024/blob/Joyal's-Repository-default-branch/images/Screenshot%202024-11-02%20201325.png?raw=true">
+
+
+<!--<img src="https://github.com/nandhukpvr/Useless-projects-Tinkerhub-Nov-2024/blob/Joyal's-Repository-default-branch/images/Screenshot%202024-11-02%20201345.png?raw=true">
+*Saved Message*
+-->
+
+*Saving Message*
+
+<img src="https://github.com/nandhukpvr/Useless-projects-Tinkerhub-Nov-2024/blob/Joyal's-Repository-default-branch/images/1.png">
+
+
+*In Downloads Folder (Not Documents)*
+
+<img src="https://github.com/nandhukpvr/Useless-projects-Tinkerhub-Nov-2024/blob/Joyal's-Repository-default-branch/images/2.png">
+
+
+*Password Protected File*
+
+<img src="https://github.com/nandhukpvr/Useless-projects-Tinkerhub-Nov-2024/blob/Joyal's-Repository-default-branch/images/3.png">
+
+
+*The saved file (Surprise)*
+
+<img src="https://github.com/nandhukpvr/Useless-projects-Tinkerhub-Nov-2024/blob/Joyal's-Repository-default-branch/images/4.png">
+
+<!--# Diagrams
+![Workflow](Add your workflow/architecture diagram here)
+*Add caption explaining your workflow*
+
+For Hardware:
+
+# Schematic & Circuit
+![Circuit](Add your circuit diagram here)
+*Add caption explaining connections*
+
+![Schematic](Add your schematic diagram here)
+*Add caption explaining the schematic*
+
+# Build Photos
+![Components](Add photo of your components here)
+*List out all components shown*
+
+![Build](Add photos of build process here)
+*Explain the build steps*
+
+![Final](Add photo of final product here)
+*Explain the final build*
+
+### Project Demo
+# Video
+[Add your demo video link here]
+*Explain what the video demonstrates*
+
+# Additional Demos
+[Add any extra demo materials/links]
+-->
+
+## Team Contributions
+- Nandhu Krishna: Ideation, Outline & Structure, Code Development, Documentation (README), Finalization.
+- Joyal James: Ideation, Code Development, Documentation (README), Finalization.
+
+---
+Made with ❤️ at TinkerHub Useless Projects 
+
+![Static Badge](https://img.shields.io/badge/TinkerHub-24?color=%23000000&link=https%3A%2F%2Fwww.tinkerhub.org%2F)
+![Static Badge](https://img.shields.io/badge/UselessProject--24-24?link=https%3A%2F%2Fwww.tinkerhub.org%2Fevents%2FQ2Q1TQKX6Q%2FUseless%2520Projects)
+
+
+
