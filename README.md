@@ -1,99 +1,106 @@
-# Useless-projects-Tinkerhub-Nov-2024
-Our code repo for the "Useless Project" by tinkerhub on Nov 2024. (CUCEK)
+# This is a file with password protection to the docx file
+# pip install python-docx
+# pip install pywin32
 
-<img width="1280" alt="readme-banner" src="https://github.com/user-attachments/assets/35332e92-44cb-425b-9dff-27bcf1023c6c">
+import tkinter as tk
+from tkinter import filedialog, messagebox
+import random
+import os
+import datetime
+from docx import Document
+import win32com.client as win32
 
-# Secret Notepad with Face detect 🎯
+def hide_text(event=None):
+    mainwindow.config(fg="#f7f5f5")
 
+def character_count_update(event):
+    content = mainwindow.get("1.0", tk.END)
+    c = len(content) - 1
+    char_count_label.config(text=f"Character Count : {c}")
 
-## Basic Details
-### Team Name: Logic Overload
+def save_file(event=None):
+    download_path = os.path.expanduser("~\\Downloads")
+    base_file_name = "secret_note"
+    file_extension = ".docx"
+    file_index = 1
+    file_name = f"{base_file_name}{file_index}{file_extension}"
+    file_path = os.path.join(download_path, file_name)
+    
+    while os.path.exists(file_path):
+        file_index += 1
+        file_name = f"{base_file_name}{file_index}{file_extension}"
+        file_path = os.path.join(download_path, file_name)
+    
+    doc = Document()
+    content = random.choice(fake_data)
+    doc.add_paragraph(content)
+    doc.save(file_path)
+    
+    current_date = datetime.datetime.now().strftime("%d%m%y")
+    
+    try:
+        word = win32.gencache.EnsureDispatch('Word.Application')
+        word.Visible = False
+        doc = word.Documents.Open(file_path)
+        doc.Password = current_date
+        doc.SaveAs(file_path, Password=current_date)
+        doc.Close()
+        word.Quit()
+        download_path = os.path.expanduser("~\\Documents")
+        file_name = f"{base_file_name}{file_index}{file_extension}"
+        file_path = os.path.join(download_path, file_name)
+        messagebox.showinfo("Secret saved", f"Your secret has been saved to:\n{file_path}\nPassword: {current_date}")
+    except Exception as e:
+        messagebox.showerror("Error", f"Failed to save with password: {str(e)}")
 
+fake_data = [
+    "Your secrets are safe... because they're not saved.",
+    "Secrets are meant to be forgotten!, so I just did it for you !",
+    "Don't waste your time with secrets. I didnt !",
+    "Lost in the void... just like your secrets.",
+    "No one will find this because it's never saved!",
+    "A memory is fleeting, just like this note.",
+    "Hidden so well, even you won't retrieve it.. Ever !",
+    "Don't worry; your secrets are safe in the ether.",
+    "Shhh... it's a secret, or was it ?",
+    "Like a whisper in the wind, all was forgotten."
+]
 
-### Team Members
-- Team Lead: Nandhu Krishna - CUCEK
-- Member 2: Joyal James - CUCEK
-- Member 3: Sneha V - CUCEK
+initial_message = "Type your secrets here..."
+root = tk.Tk()
+root.title("Secret Notepad with Active Encryption")
+root.geometry("600x600")
+root.configure(bg="#c4c4c4")
 
-### Project Description
-[2-3 lines about what your project does]
+mainwindow = tk.Text(root, width=80, height=15, font=("Verdana", 20), wrap="word", fg="#000000", bg="#f7f5f5", insertbackground="black",selectbackground="#f7f5f5")
+mainwindow = tk.Text(root, width=80, height=15,font=("Verdana" ,20), wrap="word",fg="#000000", bg="#f7f5f5", insertbackground="black" ,selectbackground="#f7f5f5")
 
-### The Problem (that doesn't exist)
-[What ridiculous problem are you solving?]
+mainwindow.pack(pady=10, padx=10)
+mainwindow.insert("1.0", initial_message)
 
-### The Solution (that nobody asked for)
-[How are you solving it? Keep it fun!]
+def on_focus_in(event):
+    if mainwindow.get("1.0", tk.END).strip() == initial_message:
+        mainwindow.delete("1.0", tk.END)
+        mainwindow.config(fg="black")
 
-## Technical Details
-### Technologies/Components Used
-For Software:
-- Language used : Python
-- [Frameworks used]
-- Ttinker
-- [Tools used]
+def on_focus_out(event):
+    if mainwindow.get("1.0", tk.END).strip() == "":
+        mainwindow.insert("1.0", initial_message)
+        mainwindow.config(fg="gray")
 
-### Implementation
-For Software:
-# Installation
-[commands]
+mainwindow.bind("<FocusIn>", on_focus_in)
+mainwindow.bind("<FocusOut>", on_focus_out)
 
-# Run
-[commands]
+save_button = tk.Button(root, text="Save the secret message with Encryption", font=("Verdana", 12), command=save_file)
+save_button.pack(pady=10)
 
-### Project Documentation
-For Software:
+def on_text_change(event):
+    mainwindow.config(fg="black")
+    root.after(50, hide_text)
 
-# Screenshots (Add at least 3)
-![Screenshot1](Add screenshot 1 here with proper name)
-*Add caption explaining what this shows*
+char_count_label = tk.Label(root, text="Character Count : 0", font=("Verdana", 12), bg="#c4c4c4")
+char_count_label.pack(pady=(5, 10))
 
-![Screenshot2](Add screenshot 2 here with proper name)
-*Add caption explaining what this shows*
+mainwindow.bind("<KeyRelease>", lambda event: [on_text_change(event), character_count_update(event)])
 
-![Screenshot3](Add screenshot 3 here with proper name)
-*Add caption explaining what this shows*
-
-# Diagrams
-![Workflow](Add your workflow/architecture diagram here)
-*Add caption explaining your workflow*
-
-For Hardware:
-
-# Schematic & Circuit
-![Circuit](Add your circuit diagram here)
-*Add caption explaining connections*
-
-![Schematic](Add your schematic diagram here)
-*Add caption explaining the schematic*
-
-# Build Photos
-![Components](Add photo of your components here)
-*List out all components shown*
-
-![Build](Add photos of build process here)
-*Explain the build steps*
-
-![Final](Add photo of final product here)
-*Explain the final build*
-
-### Project Demo
-# Video
-[Add your demo video link here]
-*Explain what the video demonstrates*
-
-# Additional Demos
-[Add any extra demo materials/links]
-
-## Team Contributions
-- [Name 1]: [Specific contributions]
-- [Name 2]: [Specific contributions]
-- [Name 3]: [Specific contributions]
-
----
-Made with ❤️ at TinkerHub Useless Projects 
-
-![Static Badge](https://img.shields.io/badge/TinkerHub-24?color=%23000000&link=https%3A%2F%2Fwww.tinkerhub.org%2F)
-![Static Badge](https://img.shields.io/badge/UselessProject--24-24?link=https%3A%2F%2Fwww.tinkerhub.org%2Fevents%2FQ2Q1TQKX6Q%2FUseless%2520Projects)
-
-
-
+root.mainloop()
